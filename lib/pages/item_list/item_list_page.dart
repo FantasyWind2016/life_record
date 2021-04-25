@@ -75,7 +75,11 @@ class _ItemListPageState extends State<ItemListPage> {
         child: GridView.builder(
           itemCount: _itemList.length,
           itemBuilder: (context, index) {
+            var item = _itemList[index];
             return GestureDetector(
+              onTap: (){
+                Navigator.of(context).pushNamed('lrapp://root/item/detail', arguments: item['id']);
+              },
               onLongPress: () {
                 addRecord(index);
               },

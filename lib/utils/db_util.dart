@@ -92,4 +92,15 @@ class DBUtil extends Object {
       + 'ON i.id=r.item_id'
     );
   }
+
+  Future<Map<String, dynamic>>queryItem(int id) async {
+    var d = await db;
+    var results = await d.query('item', where: 'id = ?', whereArgs: [id]);
+    return results.isEmpty ? {} : results.first;
+  }
+
+  Future<List<Map<String, dynamic>>>queryItemRecords(int id) async {
+    var d = await db;
+    return await d.query('record', where: 'item_id = ?', whereArgs: [id]);
+  }
 }
