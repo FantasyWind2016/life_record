@@ -90,7 +90,9 @@ class _ItemListPageState extends State<ItemListPage> {
             var item = _itemList[index];
             return GestureDetector(
               onTap: (){
-                Navigator.of(context).pushNamed('lrapp://root/item/detail', arguments: item['id']);
+                Navigator.of(context).pushNamed('lrapp://root/item/detail', arguments: item['id']).then((onValue){
+                  refreshData();
+                });
               },
               onLongPress: () {
                 CacheUtil.getData(enableRecordConfirmKey).then((onValue){
