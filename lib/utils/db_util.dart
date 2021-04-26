@@ -76,6 +76,16 @@ class DBUtil extends Object {
     });
   }
 
+  Future<int> updateItem(int id, Map<String, dynamic> data) async {
+    var d = await db;
+    int result;
+    await d.transaction((trans) async {
+      result = await trans.update('item', data, where: 'id = ?', whereArgs: [id]);
+      print('$result');
+    });
+    return result;
+  }
+
   Future<int> deleteItem(int id) async {
     var d = await db;
     int result;

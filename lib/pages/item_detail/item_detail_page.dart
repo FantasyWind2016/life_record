@@ -87,7 +87,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     ),
                   ),
                   onPressed: (){
-
+                    Navigator.of(context).pushNamed('lrapp://root/add/item', arguments: this.itemID);
                   },
                 ),
               ),
