@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:life_record/utils/cache_util.dart';
 import 'package:life_record/utils/db_util.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -70,6 +72,16 @@ class _ItemListPageState extends State<ItemListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          FlatButton.icon(
+            onPressed: (){
+              Navigator.of(context).pushNamed('lrapp://root/app/setting');
+            }, 
+            icon: Icon(Icons.settings), 
+            label: Text('设置'),
+            textColor: Colors.white,
+          ),
+        ],
       ),
       body: Center(
         child: GridView.builder(
@@ -81,7 +93,27 @@ class _ItemListPageState extends State<ItemListPage> {
                 Navigator.of(context).pushNamed('lrapp://root/item/detail', arguments: item['id']);
               },
               onLongPress: () {
-                addRecord(index);
+                CacheUtil.getData(enableRecordConfirmKey).then((onValue){
+                  if (onValue==true) {
+                    showCupertinoDialog(context: context, builder: (context) {
+                      return CupertinoAlertDialog(
+                        title: Text('确认操作'),
+                        content: Text('是否记录数据？'),
+                        actions: <Widget>[
+                          FlatButton(onPressed: (){
+                            Navigator.of(context).pop();
+                          }, child: Text('取消')),
+                          FlatButton(onPressed: (){
+                            addRecord(index);
+                            Navigator.of(context).pop();
+                          }, child: Text('确认')),
+                        ],
+                      );
+                    });
+                  } else {
+                    addRecord(index);
+                  }
+                });
               },
               child: ControlledAnimation(
                 playback: Playback.MIRROR,

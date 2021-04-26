@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:life_record/pages/add_item/add_item_page.dart';
+import 'package:life_record/pages/app_setting/app_setting_page.dart';
 import 'package:life_record/pages/item_detail/item_detail_page.dart';
 import 'package:life_record/pages/item_list/item_list_page.dart';
 
@@ -15,10 +16,9 @@ class MyApp extends StatelessWidget {
       ),
       home: ItemListPage(title: '生活记录'),
       routes: {
-        'lrapp://root/add/item':(context)=> AddItemPage(),
-        'lrapp://root/item/detail':(context){
-          return ItemDetailPage();
-        },
+        'lrapp://root/add/item':(context) => AddItemPage(),
+        'lrapp://root/item/detail':(context) => ItemDetailPage(),
+        'lrapp://root/app/setting':(context) => AppSettingPage(),
       },
     );
   }
