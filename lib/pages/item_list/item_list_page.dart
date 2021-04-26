@@ -70,6 +70,16 @@ class _ItemListPageState extends State<ItemListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          FlatButton.icon(
+            onPressed: (){
+              Navigator.of(context).pushNamed('lrapp://root/app/setting');
+            }, 
+            icon: Icon(Icons.settings), 
+            label: Text('设置'),
+            textColor: Colors.white,
+          ),
+        ],
       ),
       body: Center(
         child: GridView.builder(
