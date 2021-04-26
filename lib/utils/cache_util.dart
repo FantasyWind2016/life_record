@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final String packageKey = 'life_record';
 
+final String enableRecordConfirmKey = 'enableRecordConfirm';
+
 class CacheUtil {
   static saveData(String key, dynamic data) async {
     var sf = await SharedPreferences.getInstance();

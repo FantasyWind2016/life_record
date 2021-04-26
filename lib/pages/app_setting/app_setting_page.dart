@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:life_record/utils/cache_util.dart';
 
-final String enableRecordConfirmKey = 'enableRecordConfirm';
-
 class AppSettingPage extends StatefulWidget {
   AppSettingPage({Key key}) : super(key: key);
 
