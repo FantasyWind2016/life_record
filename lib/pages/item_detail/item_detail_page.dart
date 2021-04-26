@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:life_record/utils/db_util.dart';
 
@@ -45,6 +46,38 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
       body: Column(
         children: [
           Row(
+            children:[
+              Expanded(
+                child: FlatButton(
+                  color: Colors.red,
+                  child: Text(
+                    '删除事项',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: (){
+
+                  },
+                ),
+              ),
+              Expanded(
+                child: FlatButton(
+                  color: Colors.green,
+                  child: Text(
+                    '修改信息',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: (){
+
+                  },
+                ),
+              ),
+            ]
+          ),
+          Row(
             children: [
               Text('名称：'),
               Text('${itemData['name']??'未命名'}'),
@@ -60,6 +93,33 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 var data = records[index];
                 return ListTile(
                   title: Text('${index+1}: ${data['date']}'),
+                  trailing: Container(
+                    width: 60,
+                    height: 30,
+                    child: FlatButton(
+                      onPressed: (){
+                        DBUtil.instance.deleteRecord(data['id']).then((value){
+                          showCupertinoDialog(
+                            context: context, 
+                            builder: (BuildContext context){
+                              return CupertinoAlertDialog(
+                                title: Text('提示'),
+                                content: Text('删除成功'),
+                                actions: <Widget>[
+                                  FlatButton(onPressed: (){
+                                    queryRecords();
+                                    Navigator.of(context).pop();
+                                  }, child: Text('确定')),
+                                ],
+                              );
+                            },
+                          );
+                        });
+                      }, 
+                      child: Icon(Icons.delete, color: Colors.white,),
+                      color: Colors.red,
+                    ),
+                  ),
                 );
               },
             ),

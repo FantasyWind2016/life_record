@@ -4,7 +4,21 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+final int dbCurrentVersion = 1;
+
 class DBUtil extends Object {
+  final dbName = 'lr.db';
+  final initSQLMap = {
+    1: [
+      'create table item (id INTEGER PRIMARY KEY, name TEXT)',
+      'create table record (id INTEGER PRIMARY KEY, item_id INTEGER, date DateTime, delete_flag INTEGER DEFAULT 0)',
+    ],
+    2: [
+    ],
+    3: [
+    ],
+  };
+
   static DBUtil instance = DBUtil();
 
   Future<String> initDBPath(String name) async {
@@ -32,17 +46,6 @@ class DBUtil extends Object {
     return _db;
   }
 
-  final dbName = 'lr.db';
-  final initSQLMap = {
-    1: [
-      'create table item (id INTEGER PRIMARY KEY, name TEXT)',
-    ],
-    2: [
-    ],
-    3: [
-      'create table record (id INTEGER PRIMARY KEY, item_id INTEGER, date DateTime)'
-    ],
-  };
   execInitSQL(Database db, int oldVersion, int newVersion) async {
     for (var i = oldVersion+1; i <=newVersion; i++) {
       var version1 = initSQLMap[i];
@@ -53,7 +56,7 @@ class DBUtil extends Object {
   }
   init() async {
     dbPath = await initDBPath(dbName);
-    _db = await openDatabase(dbPath, version: 3, onCreate: (Database db, int version) async {
+    _db = await openDatabase(dbPath, version: dbCurrentVersion, onCreate: (Database db, int version) async {
       await execInitSQL(db, 0, version);
     }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
       await execInitSQL(db, oldVersion, newVersion);
@@ -83,12 +86,22 @@ class DBUtil extends Object {
     return id;
   }
 
+  Future<int> deleteRecord(int id) async {
+    var d = await db;
+    int resultId;
+    await d.transaction((trans) async {
+      resultId = await trans.update('record', {'delete_flag': 1}, where: 'id = ?', whereArgs: [id]);
+      print('$resultId');
+    });
+    return resultId;
+  }
+
   Future<List<Map<String, dynamic>>>queryDistinctNewestRecords(Map data) async {
     var d = await db;
     return await d.rawQuery(
       'SELECT i.id AS item_id, i.name, r.id, r.count, r.max_date '
       + 'FROM item AS i LEFT JOIN '
-      + '(SELECT id, item_id, count(date) as count, max(date) as max_date from record group by item_id) AS r '
+      + '(SELECT id, item_id, count(date) as count, max(date) as max_date from record where delete_flag = 0 group by item_id) AS r '
       + 'ON i.id=r.item_id'
     );
   }
@@ -101,6 +114,6 @@ class DBUtil extends Object {
 
   Future<List<Map<String, dynamic>>>queryItemRecords(int id) async {
     var d = await db;
-    return await d.query('record', where: 'item_id = ?', whereArgs: [id]);
+    return await d.query('record', where: 'item_id = ? AND delete_flag = 0', whereArgs: [id]);
   }
 }
