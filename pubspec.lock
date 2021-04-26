@@ -64,6 +64,13 @@ packages:
       url: "http://192.168.40.200:8090"
     source: hosted
     version: "0.1.3"
+  date_format:
+    dependency: "direct main"
+    description:
+      name: date_format
+      url: "http://192.168.40.200:8090"
+    source: hosted
+    version: "1.0.9"
   flutter:
     dependency: "direct main"
     description: flutter

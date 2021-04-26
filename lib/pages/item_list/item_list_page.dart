@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,10 @@ class _ItemListPageState extends State<ItemListPage> {
   addRecord(int index) async {
     Map<String, dynamic> value = _itemList[index];
     var time = DateTime.now();
+    var dateTimeStr = formatDate(time, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
     var id = await DBUtil.instance.insertRecord({
       'item_id': value['id'],
-      'date': time.toString(),
+      'date': dateTimeStr,
     });
     if (id is int) {
       refreshData();

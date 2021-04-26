@@ -99,8 +99,20 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               Text('${itemData['name']??'未命名'}'),
             ]
           ),
-          Container(
-            child: Text('记录列表：'),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text('记录列表：'),
+              ),
+              Expanded(
+                child: FlatButton(
+                  onPressed: (){
+                    Navigator.of(context).pushNamed('lrapp://root/add/record', arguments: {'item_id': this.itemID});
+                  },
+                  child: Text('新增'),
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: records==null || records.isEmpty ? Container(child:Text('暂无数据')) : ListView.builder(
