@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:life_record/pages/add_item/add_item_page.dart';
+import 'package:life_record/pages/add_record/add_record_page.dart';
 import 'package:life_record/pages/app_setting/app_setting_page.dart';
 import 'package:life_record/pages/item_detail/item_detail_page.dart';
 import 'package:life_record/pages/item_list/item_list_page.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         'lrapp://root/add/item':(context) => AddItemPage(),
         'lrapp://root/item/detail':(context) => ItemDetailPage(),
         'lrapp://root/app/setting':(context) => AppSettingPage(),
+        'lrapp://root/add/record':(context) => AddRecordPage(),
       },
     );
   }
