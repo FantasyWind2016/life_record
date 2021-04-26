@@ -10,7 +10,7 @@ class DBUtil extends Object {
   final dbName = 'lr.db';
   final initSQLMap = {
     1: [
-      'create table item (id INTEGER PRIMARY KEY, name TEXT)',
+      'create table item (id INTEGER PRIMARY KEY, name TEXT, delete_flag INTEGER DEFAULT 0)',
       'create table record (id INTEGER PRIMARY KEY, item_id INTEGER, date DateTime, delete_flag INTEGER DEFAULT 0)',
     ],
     2: [
@@ -76,6 +76,16 @@ class DBUtil extends Object {
     });
   }
 
+  Future<int> deleteItem(int id) async {
+    var d = await db;
+    int result;
+    await d.transaction((trans) async {
+      result = await trans.update('item', {'delete_flag': 1}, where: 'id = ?', whereArgs: [id]);
+      print('$result');
+    });
+    return result;
+  }
+
   Future<int> insertRecord(Map<String, dynamic> data) async {
     var d = await db;
     int id;
@@ -102,7 +112,8 @@ class DBUtil extends Object {
       'SELECT i.id AS item_id, i.name, r.id, r.count, r.max_date '
       + 'FROM item AS i LEFT JOIN '
       + '(SELECT id, item_id, count(date) as count, max(date) as max_date from record where delete_flag = 0 group by item_id) AS r '
-      + 'ON i.id=r.item_id'
+      + 'ON i.id=r.item_id '
+      + 'WHERE i.delete_flag = 0'
     );
   }
 

@@ -57,7 +57,23 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     ),
                   ),
                   onPressed: (){
-
+                    DBUtil.instance.deleteItem(this.itemID).then((value){
+                      showCupertinoDialog(
+                        context: context, 
+                        builder: (BuildContext context){
+                          return CupertinoAlertDialog(
+                            title: Text('提示'),
+                            content: Text('事项删除成功'),
+                            actions: <Widget>[
+                              FlatButton(onPressed: (){
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              }, child: Text('确定')),
+                            ],
+                          );
+                        },
+                      );
+                    });
                   },
                 ),
               ),
