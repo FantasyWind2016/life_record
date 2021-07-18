@@ -117,14 +117,16 @@ class DBUtil extends Object {
   }
 
   Future<List<Map<String, dynamic>>>queryDistinctNewestRecords(Map data) async {
-    var d = await db;
-    return await d.rawQuery(
-      'SELECT i.id AS item_id, i.name, r.id, r.count, r.max_date '
+    String sql = 'SELECT i.id AS item_id, i.name, r.id, r.count, r.max_date '
       + 'FROM item AS i LEFT JOIN '
       + '(SELECT id, item_id, count(date) as count, max(date) as max_date from record where delete_flag = 0 group by item_id) AS r '
       + 'ON i.id=r.item_id '
-      + 'WHERE i.delete_flag = 0'
-    );
+      + 'WHERE i.delete_flag = 0';
+    if (data!=null && data['item_id']!=null) {
+      sql += ' AND i.id = ${data['item_id']}';
+    }
+    var d = await db;
+    return await d.rawQuery(sql);
   }
 
   Future<Map<String, dynamic>>queryItem(int id) async {

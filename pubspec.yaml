@@ -32,6 +32,7 @@ dependencies:
   sa_stateless_animation: 1.0.3
   sa_v1_migration: 1.1.2
   shared_preferences: 0.5.4+9
+  get: 2.0.7
 
 dev_dependencies:
   flutter_test:

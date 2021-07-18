@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final String packageKey = 'life_record';
 
 final String enableRecordConfirmKey = 'enableRecordConfirm';
+final String enableRecordSuccessSnackBarKey = 'enableRecordSuccessSnackBarKey';
 
 class CacheUtil {
   static saveData(String key, dynamic data) async {

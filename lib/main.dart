@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:life_record/pages/add_item/add_item_page.dart';
 import 'package:life_record/pages/add_record/add_record_page.dart';
 import 'package:life_record/pages/app_setting/app_setting_page.dart';
@@ -10,7 +11,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: '生活记录',
       theme: ThemeData(
         primarySwatch: Colors.blue,

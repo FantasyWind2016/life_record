@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:life_record/mixin/color_mixin.dart';
 import 'package:life_record/utils/db_util.dart';
 
 class AddItemPage extends StatefulWidget {
@@ -40,36 +42,45 @@ class _AddItemPageState extends State<AddItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title),),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Text('名称：'),
-              Expanded(
-                child: TextField(
-                  controller: titleTextController,
-                  onChanged: (value){
-                    setState(() {
-                      
-                    });
-                  },
+      body: Container(
+        color: ColorMixin.backgroudColor,
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Text('名称：'),
+                Expanded(
+                  child: TextField(
+                    controller: titleTextController,
+                    onChanged: (value){
+                      setState(() {
+                        
+                      });
+                    },
+                  ),
                 ),
+              ]
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 16),
+              child: CupertinoButton(
+                color: Colors.blue,
+                onPressed: titleTextController.text == itemData['name'] ? null : () async {
+                  if (this.itemID==null) {
+                    await DBUtil.instance.insertItem({'name': titleTextController.text});
+                  } else {
+                    await DBUtil.instance.updateItem(this.itemID, {'name': titleTextController.text});
+                  }
+                  
+                  Navigator.of(context).pop();
+                },
+                child: Text('提交'),
               ),
-            ]
-          ),
-          FlatButton(
-            onPressed: titleTextController.text == itemData['name'] ? null : () async {
-              if (this.itemID==null) {
-                await DBUtil.instance.insertItem({'name': titleTextController.text});
-              } else {
-                await DBUtil.instance.updateItem(this.itemID, {'name': titleTextController.text});
-              }
-              
-              Navigator.of(context).pop();
-            },
-            child: Text('提交'),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

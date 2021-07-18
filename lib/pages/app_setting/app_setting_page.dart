@@ -11,6 +11,7 @@ class AppSettingPage extends StatefulWidget {
 
 class _AppSettingPageState extends State<AppSettingPage> {
   bool enableRecordConfirm = true;
+  bool enableRecordSuccessSnackBar = true;
   
   @override
   void didChangeDependencies() {
@@ -18,6 +19,13 @@ class _AppSettingPageState extends State<AppSettingPage> {
       if (onValue!=null) {
         setState(() {
           enableRecordConfirm = onValue;
+        });
+      }
+    });
+    CacheUtil.getData(enableRecordSuccessSnackBarKey).then((onValue){
+      if (onValue!=null) {
+        setState(() {
+          enableRecordSuccessSnackBar = onValue;
         });
       }
     });
@@ -33,11 +41,20 @@ class _AppSettingPageState extends State<AppSettingPage> {
         child: ListView(
           children: <Widget>[
             ListTile(
-              title: Text('记录前确认弹框'),
+              title: Text('首页记录前确认弹框'),
               trailing: CupertinoSwitch(
                 value: enableRecordConfirm, 
                 onChanged: (value){
                   CacheUtil.saveData(enableRecordConfirmKey, value);
+                }
+              ),
+            ),
+            ListTile(
+              title: Text('首页记录成功后顶部提示'),
+              trailing: CupertinoSwitch(
+                value: enableRecordSuccessSnackBar, 
+                onChanged: (value){
+                  CacheUtil.saveData(enableRecordSuccessSnackBarKey, value);
                 }
               ),
             ),
